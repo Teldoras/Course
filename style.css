@@ -1,0 +1,179 @@
+*
+{
+    box-sizing: border-box;
+    user-select: none;
+}
+body 
+{
+    width: 100%;
+    height: 100%;
+    min-width: 640px;
+    min-height: 480px;
+    text-align: center;
+    
+    margin: 0 auto;
+
+    background-color: slategray;
+
+    display: block;
+    position: absolute;
+}
+#game
+{  
+    height: 85%; 
+    min-height: 400px;
+    width: 100%;
+    min-width: 640px;
+
+    top: 0px;
+
+    margin: 0 auto;
+
+    display: grid;
+    grid-area: game;
+    grid-template-areas: 
+        "upgrade_shop clicker"
+        "settings_menu clicker";
+    grid-template-columns: minmax(240px,25%) minmax(400px,75%);
+    grid-template-rows: minmax(220px, 60%) minmax(180px, 40%);
+
+    background-image: url(Graphics/sky_32.png);
+    background-position: center;
+    background-size: 128px;
+
+    position: absolute;
+}
+
+#upgrade_shop
+{   
+    grid-area: upgrade_shop;
+    top: 0px;
+
+    display: block;
+
+    position: absolute;
+}
+#settings_menu
+{
+    grid-area: settings_menu;
+
+    bottom: 0px;
+
+    display: block;
+    position: absolute;
+}
+#clicker
+{
+    width: minmax(300px, 75%);
+    height: 100%;
+    min-height: 400px;
+
+    display: inline-block;
+    vertical-align: baseline;
+    grid-area: clicker;
+
+    background-image: url(Graphics/Island_128.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    position: relative;
+}
+#click_button
+{
+    width: 64px;
+    height: 64px;
+
+    position:absolute;
+
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+
+    display: block;
+
+    background-image: url(Graphics/mine_32.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:contain;
+
+    font-weight: bold;
+    color:yellow;
+    user-select: none;
+
+    cursor: pointer;
+}
+
+#advertisement_box
+{
+    height: 15%;
+    min-height: 80px;
+    width: 100%;
+    bottom: 0px;
+
+    background-color:lightgrey;
+    border: 3px solid black;
+
+    background-image: url(Graphics/ad_0_64.png);
+
+
+
+    z-index: 100;
+    position: absolute;
+}
+#advertisement_text
+{
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+
+    background-color:gold;
+    border: 5px solid goldenrod;
+    border-radius: 10px;
+
+    font-weight: bold;
+    color: rgb(126, 93, 11);
+    font-size: 25px;
+
+    position: absolute;
+}
+
+#darkmode
+{
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    opacity: 75%;
+    z-index: 190;
+    position: absolute;
+    visibility: hidden;
+}
+#pop_up
+{
+    top: 30%;
+    left: 20%;
+    
+    width: 60%;
+    height: 40%;
+
+    display: grid;
+    grid-template-columns: 40% 60%;
+
+    position: absolute;
+    visibility: hidden;
+
+    z-index: 200;
+}
+#advisor
+{
+    background-image: url(Graphics/fairy_32.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 96px;
+}
+
+.changable_style
+{
+    background-color:saddlebrown;
+    color:darkorange;
+    border: 3px solid maroon;
+}
