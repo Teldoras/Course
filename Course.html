@@ -8,12 +8,23 @@
 </head>
 
 <body>
-    <div id="game">
+    <div id="game_field">
+        <div id="clicker">
+            <div id="clicker_info" class="changable_style">
+                <h1 id="header">Золота: 0</h1>
+                <h3 id="click_per_time">Кликов в минуту: 0.00</h3>
+                <h2 id="session_time">Время сессии: 00:00:00</h2>
+            </div>
 
 
+            <div id="click_button">1</div>
+        </div>
+
+        <div id="shop_buttons" class="changable_style">
+            <button id="shop_open">Открыть магазин</button>
+            <button id="shop_close" style="display: none;">Закрыть магазин</button>
+        </div>
         <div id="upgrade_shop" style="visibility: hidden;" class="changable_style">
-            <button id="shop_open" style="visibility:visible">Открыть магазин</button>
-            <button id="shop_close" style="visibility: visible; display: none;">Закрыть магазин</button>
             <button id="upgrade_1">Покормить канарейку: +1 - 10 з.</button>
             <button id="upgrade_2">Смазать тележку: +2 - 50 з.</button>
             <button id="upgrade_3">Закалить кирку: +3 - 200 з.</button>
@@ -21,39 +32,35 @@
             <button id="upgrade_5">Нанять работника - 1000 з.</button>
         </div>
         <div id="settings_menu" style="visibility: hidden;" class="changable_style">
+            <button id="save_button">Сохранить</button>
+            <button id="load_button">Загрузить</button>
+            <button id="statistic_button">Статистика</button>
+            <button id="wipe_button">Обнулить сохранение</button>
             <form id="form">
                 <label for="choose_color">Выбрать цвет интерфейса:</label>
                 <input type="color" name="shoose_color" id="choose_color_id">
                 <input type="submit" id="submit_color">
             </form>
-            <button id="font_1">Шрифт: курьер</button>
-            <button id="font_2">Шрифт: таймс</button>
-            <button id="settings_open" style="visibility:visible">Настройки</button>
-            <button id="settings_close" style="visibility:visible; display: none;">Назад</button>
+            <button id="font_1" style="font-family:'Courier New', Courier, monospace">Шрифт: курьер</button>
+            <button id="font_2" style="font-family:'Times New Roman', Times, serif">Шрифт: таймс</button>
+        </div>
+        <div id="settings_buttons" class="changable_style">
+            <button id="settings_open">Настройки</button>
+            <button id="settings_close" style="display: none;">Назад</button>
         </div>
 
-
-        <div id="clicker">
-            <h1 id="header">Золота: 0</h1>
-            <p id="click_per_time">Кликов в минуту: 0</p>
-            <div id="click_button">1</div>
-            <button id="save_button">Сохранить</button>
-            <button id="load_button">Загрузить</button>
-            <button id="statistic_button">Статистика</button>
-            <button id="wipe_button">Обнулить сохранение</button>
-            <h2 id="session_time">Время сессии: 00:00:00</h2>
-        </div>
         <div id="darkmode"></div>
         <div id="pop_up">
             <div id="advisor"></div>
             <div class="changable_style" id="text_plate">
-                <span id="pop_up_text">Текст-шаблон, если вы это читаете - сообщите разработчику.</span>
+                <h4 id="pop_up_text">Текст-шаблон, если вы это читаете - сообщите разработчику.</h4>
+                <p></p>
                 <span id="pop_up_close">[Закрыть]</span>
             </div>
         </div>
     </div>
     <div id="advertisement_box">
-        <div id="advertisement_text">
+        <div id="advertisement_text" class="golden_style">
             Здесь могла быть ваша реклама!
         </div>
     </div>

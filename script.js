@@ -29,7 +29,9 @@ let click_per_time_text = document.getElementById('click_per_time');
 let session_time = document.getElementById('session_time');
 font_1 = document.getElementById('font_1');
 font_2 = document.getElementById('font_2');
-game = document.getElementById('game');
+game_field = document.getElementById('game_field');
+
+let ad_state;
 
 let seconds = 0;
 let minutes = 0;
@@ -125,6 +127,7 @@ upgrade_5_button.addEventListener('click', function () {
 });
 
 shop_open.addEventListener('click', function () {
+
     this.style.display = "none";
     shop_close.style.display = "inline";
     upgrade_shop.style.visibility = "visible";
@@ -204,6 +207,9 @@ wipe_button.addEventListener('click', function () {
 pop_up_close.addEventListener('click', function () {
     darkmode.style.visibility = "hidden";
     pop_up.style.visibility = "hidden";
+})
+ad_text.addEventListener('click', function () {
+    redirect('adv');
 })
 
 //Функции
@@ -309,23 +315,11 @@ function count_clicks_per_time() {
     click_per_time_text.textContent = 'Кликов в минуту: ' + (click_per_time_amount / 10 * 60).toFixed(2);
 }
 function clicks_per_time_increasing(index) {
-    if (index == 0) {
-        click_per_time_amount += 0.5;
-        setTimeout(clicks_per_time_increasing, 5000, 1);
-    }
-    if (index == 1) {
-        click_per_time_amount += 0.5;
-        setTimeout(clicks_per_time_reducing, 5000, 0);
-    }
+    click_per_time_amount += 1;
+    setTimeout(clicks_per_time_reducing, 10000);
 }
 function clicks_per_time_reducing(index) {
-    if (index == 0) {
-        click_per_time_amount -= 0.5;
-        setTimeout(clicks_per_time_reducing, 5000, 1);
-    }
-    if (index == 1) {
-        click_per_time_amount -= 0.5;
-    }
+    click_per_time_amount -= 1;
 }
 function count_session_time() {
     total_playtime_seconds += 1;
@@ -366,27 +360,50 @@ function ad_change(index) {
         case 0:
             ad_text.textContent = 'Здесь могла быть ваша реклама!'
             ad_box.style.backgroundImage = "url(Graphics/ad_0_64.png)";
+            ad_state = 0;
             break;
         case 1:
             ad_text.textContent = 'Так-же попробуйте: Minecraft!'
             ad_box.style.backgroundImage = 'url(Graphics/ad_1_64.png)';
+            ad_state = 1;
             break;
         case 2:
             ad_text.textContent = 'Так-же попробуйте: Terraria!'
             ad_box.style.backgroundImage = 'url(Graphics/ad_2_64.png)';
+            ad_state = 2;
             break;
         case 3:
             ad_text.textContent = 'Так-же попробуйте: CookieClicker!'
             ad_box.style.backgroundImage = 'url(Graphics/ad_3_64.png)';
+
+            ad_state = 3;
             break;
     }
     setTimeout(ad_change, 15000, rnd)
+}
+function redirect(index) {
+    if (index == 'adv') {
+        switch (ad_state) {
+            case 0:
+                window.open('placeholder.html', '_blank');
+                break;
+            case 1:
+                window.open('https://www.minecraft.net/ru-ru', '_blank');
+                break;
+            case 2:
+                window.open('https://www.terraria.org/', '_blank');
+                break;
+            case 3:
+                window.open('https://cookieclicker2.neocities.org/', '_blank');
+                break;
+        }
+    }
 }
 
 function tutorial(tutorial_code) {
     switch (tutorial_code) {
         case 0:
-            pop_up_text.textContent = 'Вы сделали свой первый клик! Добро пожаловать в обучение! Добывайте золото в шахте, покупайте улучшения и добывайте ещё больше золота! Игра поддерживает сохранения, так что вы, вероятно, больше не увидите это сообщение. А теперь попробуйте открыть магазин.';
+            pop_up_text.textContent = 'Вы сделали свой первый клик!  Добро пожаловать в обучение! Добывайте золото в шахте, покупайте улучшения и добывайте ещё больше золота! Игра поддерживает сохранения, так что вы, вероятно, больше не увидите это сообщение. А теперь попробуйте открыть магазин.';
             tutorial_checked[0] = 1;
             go_dark();
             break;
