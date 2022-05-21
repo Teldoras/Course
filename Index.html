@@ -42,11 +42,13 @@
             </form>
             <button id="font_1" style="font-family:'Courier New', Courier, monospace">Шрифт: курьер</button>
             <button id="font_2" style="font-family:'Times New Roman', Times, serif">Шрифт: таймс</button>
+            
             <form id="form_2">
                 <label for="bg_volume">Громкость музыки</label>
-                <input name="bg_volume" type="range" value="30" min="0" max="100" step="5" oninput="this.nextElementSibling.value = this.value">
+                <input id="bg_volume_id" name="bg_volume" type="range" value="30" min="0" max="100" step="5" oninput="this.nextElementSibling.value = this.value">
                 <output>30</output>
             </form>
+            
         </div>
         <div id="settings_buttons" class="changable_style">
             <button id="settings_open">Настройки</button>

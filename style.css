@@ -35,10 +35,10 @@ body {
         "upgrade_shop      clicker"
         "settings_menu     clicker"
         "settings_buttons  clicker";
-    grid-template-columns: minmax(240px, 25%) minmax(400px, 75%);
+    grid-template-columns: minmax(180px, 25%) minmax(440px, 75%);
     grid-template-rows: 27px 1fr 1fr 27px;
 
-    background-image: url(resourses/graphics/sky_32.png);
+    background-image: url(resourses/graphics/sky_64.png);
     background-position: center;
     background-size: 128px;
 
@@ -61,9 +61,9 @@ body {
 
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    align-items: stretch;
 
-    overflow: auto;
+    overflow-y:auto;
 }
 
 #settings_menu {
@@ -76,9 +76,9 @@ body {
 
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    
-    overflow: auto;
+    align-items: stretch;
+
+    overflow-y: auto;
 }
 
 #settings_buttons {

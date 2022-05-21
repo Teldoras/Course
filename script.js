@@ -2,21 +2,21 @@ let header = document.getElementById('header');
 let click_button = document.getElementById('click_button');
 let save_button = document.getElementById('save_button');
 let load_button = document.getElementById('load_button');
-statistic_button = document.getElementById('statistic_button');
+let statistic_button = document.getElementById('statistic_button');
 let wipe_button = document.getElementById('wipe_button');
 let shop_open = document.getElementById('shop_open');
 let shop_close = document.getElementById('shop_close');
 let settings_open = document.getElementById('settings_open');
 let settings_close = document.getElementById('settings_close');
 let form_1 = document.getElementById('form_1');
-form_2 = document.getElementById('form_2');
+let form_2 = document.getElementById('form_2');
 let choose_color = document.getElementById('choose_color_id');
 let submit_color = document.getElementById('submit_color');
-bg_volume = document.getElementById('bg_volume');
+let bg_volume = document.getElementById('bg_volume_id');
 let upgrade_shop = document.getElementById('upgrade_shop');
 let settings_menu = document.getElementById('settings_menu');
-ad_box = document.getElementById('advertisement_box');
-ad_text = document.getElementById('advertisement_text');
+let ad_box = document.getElementById('advertisement_box');
+let ad_text = document.getElementById('advertisement_text');
 let upgrade_1_button = document.getElementById('upgrade_1');
 let upgrade_2_button = document.getElementById('upgrade_2');
 let upgrade_3_button = document.getElementById('upgrade_3');
@@ -29,9 +29,11 @@ let pop_up_close = document.getElementById('pop_up_close');
 let style_massive = document.getElementsByClassName('changable_style');
 let click_per_time_text = document.getElementById('click_per_time');
 let session_time = document.getElementById('session_time');
-font_1 = document.getElementById('font_1');
-font_2 = document.getElementById('font_2');
-game_field = document.getElementById('game_field');
+let font_1 = document.getElementById('font_1');
+let font_2 = document.getElementById('font_2');
+let game_field = document.getElementById('game_field');
+
+let bg_music = new Audio('resourses/audio/background_1.mp3');
 
 let ad_state;
 
@@ -44,7 +46,7 @@ let click_per_time_amount = 0;
 let tutorial_checked = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 let gold_amount = 0;
-total_gold = gold_amount;
+let total_gold = gold_amount;
 let upgrade_tier = [0, 0, 0, 0, 0];
 let base_upgrade_cost = [10, 50, 200, 500, 1000];
 let upgrade_cost = [10, 50, 200, 500, 1000];
@@ -54,42 +56,15 @@ let click_power = 1;
 
 // события в разработке
 
-function play_sound(index)
-{
-    switch (index) {
-        
-        case 0:
-            
-            var bg_music = new Audio('resourses/audio/background_1.mp3');
-            bg_music.loop = true;
-            bg_music.volume = 0.3;
-            console.log(bg_music)
-            bg_music.play();
-            break;
-        case 1:
-            let click_sound = new Audio();
-            switch (Math.floor(Math.random() * 2)) {
-                case 0:
-                    click_sound.src = 'resourses/audio/coin_1.mp3';
-                    break;
-                case 1:
-                    click_sound.src = 'resourses/audio/coin_2.mp3';
-                    break;
-            }
-            click_sound.play();
-            break;
-        case 2:
-            var shop_sound= new Audio ('resourses/audio/shop_coins_1.mp3');
-            shop_sound.play();
-            break;
-    }
-}
 
-/*
-bg_volume.oninput = function(){
-    bg_music.volume = ' ' + parseInt(this.value) / 100;
-}
-*/
+
+bg_volume.addEventListener('change', function(){
+
+    bg_music.volume = parseInt(this.value) / 100;
+
+})
+
+
 
 // События
 
@@ -97,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
     count_session_time();
     setInterval(count_clicks_per_time, 1000);
     ad_change(0);
-    play_sound(0);
 })
 document.addEventListener('keydown', function (event) {
     if (event.code = 'Enter') {
@@ -211,8 +185,6 @@ submit_color.addEventListener('click', function (choosed_color) {
         b_l = b + ((255 - b) / 3);
         b_d = b - (b / 3);
         style_massive[i].style.backgroundColor = choose_color.value;
-        pop_up_text.textContent = 'Код цвета ' + r + ' и ' + choose_color.value;
-        go_dark();
         style_massive[i].style.backgroundColor = "rgb(" + r_l + "," + g_l + "," + b_l + ")";
         style_massive[i].style.color = "rgb(" + r_d + "," + g_d + "," + b_d + ")";
         style_massive[i].style.border = "3px solid rgb(" + r_d + "," + g_d + "," + b_d + ")";
@@ -299,6 +271,10 @@ function autosave() {
     setTimeout(autosave, 300000)
 }
 function load_data() {
+    if (tutorial_checked[0] == 0)
+    {
+        play_sound(0);
+    }
     if (tutorial_checked[7] == 0) {
         setTimeout(autosave, 300000);
     }
@@ -540,4 +516,31 @@ function shop_unblur() {
     upgrade_3_button.disabled = false;
     upgrade_4_button.disabled = false;
     upgrade_5_button.disabled = false;
+}
+function play_sound(index)
+{
+    switch (index) {
+        case 0:
+            
+            bg_music.loop = true;
+            bg_music.volume = 0.3;
+            bg_music.play();
+            break;
+        case 1:
+            let click_sound = new Audio();
+            switch (Math.floor(Math.random() * 2)) {
+                case 0:
+                    click_sound.src = 'resourses/audio/coin_1.mp3';
+                    break;
+                case 1:
+                    click_sound.src = 'resourses/audio/coin_2.mp3';
+                    break;
+            }
+            click_sound.play();
+            break;
+        case 2:
+            let shop_sound= new Audio ('resourses/audio/shop_coins_1.mp3');
+            shop_sound.play();
+            break;
+    }
 }
