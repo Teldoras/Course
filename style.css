@@ -38,7 +38,7 @@ body {
     grid-template-columns: minmax(240px, 25%) minmax(400px, 75%);
     grid-template-rows: 27px 1fr 1fr 27px;
 
-    background-image: url(Graphics/sky_32.png);
+    background-image: url(resourses/graphics/sky_32.png);
     background-position: center;
     background-size: 128px;
 
@@ -62,6 +62,8 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+
+    overflow: auto;
 }
 
 #settings_menu {
@@ -75,6 +77,8 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    
+    overflow: auto;
 }
 
 #settings_buttons {
@@ -92,7 +96,7 @@ body {
     vertical-align: baseline;
     grid-area: clicker;
 
-    background-image: url(Graphics/Island_256.png);
+    background-image: url(resourses/graphics/Island_256.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 80%;
@@ -122,7 +126,7 @@ body {
 
     display: block;
 
-    background-image: url(Graphics/mine_64.png);
+    background-image: url(resourses/graphics/mine_64.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -160,7 +164,7 @@ body {
 }
 
 #advisor {
-    background-image: url(Graphics/fairy_32.png);
+    background-image: url(resourses/graphics/fairy_32.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 96px;
@@ -175,7 +179,7 @@ body {
 
     background-color: lightgrey;
     border: 3px solid black;
-    background-image: url(Graphics/ad_0_64.png);
+    background-image: url(resourses/graphics/ad_0_64.png);
 
     z-index: 100;
 }

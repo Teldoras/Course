@@ -8,9 +8,11 @@ let shop_open = document.getElementById('shop_open');
 let shop_close = document.getElementById('shop_close');
 let settings_open = document.getElementById('settings_open');
 let settings_close = document.getElementById('settings_close');
-let form = document.getElementById('form');
+let form_1 = document.getElementById('form_1');
+form_2 = document.getElementById('form_2');
 let choose_color = document.getElementById('choose_color_id');
 let submit_color = document.getElementById('submit_color');
+bg_volume = document.getElementById('bg_volume');
 let upgrade_shop = document.getElementById('upgrade_shop');
 let settings_menu = document.getElementById('settings_menu');
 ad_box = document.getElementById('advertisement_box');
@@ -52,6 +54,42 @@ let click_power = 1;
 
 // события в разработке
 
+function play_sound(index)
+{
+    switch (index) {
+        
+        case 0:
+            
+            var bg_music = new Audio('resourses/audio/background_1.mp3');
+            bg_music.loop = true;
+            bg_music.volume = 0.3;
+            console.log(bg_music)
+            bg_music.play();
+            break;
+        case 1:
+            let click_sound = new Audio();
+            switch (Math.floor(Math.random() * 2)) {
+                case 0:
+                    click_sound.src = 'resourses/audio/coin_1.mp3';
+                    break;
+                case 1:
+                    click_sound.src = 'resourses/audio/coin_2.mp3';
+                    break;
+            }
+            click_sound.play();
+            break;
+        case 2:
+            var shop_sound= new Audio ('resourses/audio/shop_coins_1.mp3');
+            shop_sound.play();
+            break;
+    }
+}
+
+/*
+bg_volume.oninput = function(){
+    bg_music.volume = ' ' + parseInt(this.value) / 100;
+}
+*/
 
 // События
 
@@ -59,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
     count_session_time();
     setInterval(count_clicks_per_time, 1000);
     ad_change(0);
+    play_sound(0);
 })
 document.addEventListener('keydown', function (event) {
     if (event.code = 'Enter') {
@@ -79,7 +118,9 @@ click_button.addEventListener('mousedown', function () {
     click_button.style.height = '60px';
     if (tutorial_checked[0] == 0) {
         tutorial(0);
+        play_sound(0);
     }
+    play_sound(1);
 });
 click_button.addEventListener('mouseup', function () {
     click_button.style.width = '68px';
@@ -90,14 +131,19 @@ click_button.addEventListener('mouseout', function () {
     click_button.style.height = '64px';
 })
 
+
+
 upgrade_1_button.addEventListener('click', function () {
     buy__basic_upgrade(this, 0);
+    play_sound(2);
 });
 upgrade_2_button.addEventListener('click', function () {
     buy__basic_upgrade(this, 1);
+    play_sound(2);
 });
 upgrade_3_button.addEventListener('click', function () {
     buy__basic_upgrade(this, 2);
+    play_sound(2);
 });
 upgrade_4_button.addEventListener('click', function () {
     if (gold_amount >= upgrade_cost[3]) {
@@ -109,6 +155,7 @@ upgrade_4_button.addEventListener('click', function () {
     else {
         error(1);
     }
+    play_sound(2);
 });
 upgrade_5_button.addEventListener('click', function () {
     if (gold_amount >= upgrade_cost[4]) {
@@ -124,6 +171,7 @@ upgrade_5_button.addEventListener('click', function () {
     else {
         error(1);
     }
+    play_sound(2);
 });
 
 shop_open.addEventListener('click', function () {
@@ -170,6 +218,7 @@ submit_color.addEventListener('click', function (choosed_color) {
         style_massive[i].style.border = "3px solid rgb(" + r_d + "," + g_d + "," + b_d + ")";
     }
 })
+
 font_1.addEventListener('click', function () {
     game.style.fontFamily = '"Courier"';
     shop.style.fontFamily = '"Courier"';
@@ -307,7 +356,7 @@ function refresh_data() {
     click_power_modifier = upgrade_tier[3] * 0.05;
     click_power = Math.floor(base_click_power * (1 + click_power_modifier));
     click_button.textContent = click_power;
-    upgrade_5_button.textContent = textContent = 'Нанять работника - ' + upgrade_cost[4] + ' з./мин. (Сейчас ' + upgrade_tier[4] + ', +' + upgrade_tier[4] * click_power + ' з./мин.)';
+    upgrade_5_button.textContent = textContent = 'Нанять работника - ' + upgrade_cost[4] + ' з. (Сейчас ' + upgrade_tier[4] + ', +' + upgrade_tier[4] * click_power + ' з./мин.)';
     header.textContent = 'Золота: ' + gold_amount;
     upgrade_4_button.textContent = 'Улучшить печь: +5% (+' + Math.floor(base_click_power * 0.05) + ') - ' + upgrade_cost[3] + ' з.';
 }
@@ -359,22 +408,22 @@ function ad_change(index) {
     switch (rnd) {
         case 0:
             ad_text.textContent = 'Здесь могла быть ваша реклама!'
-            ad_box.style.backgroundImage = "url(Graphics/ad_0_64.png)";
+            ad_box.style.backgroundImage = "url(resourses/graphics/ad_0_64.png)";
             ad_state = 0;
             break;
         case 1:
             ad_text.textContent = 'Так-же попробуйте: Minecraft!'
-            ad_box.style.backgroundImage = 'url(Graphics/ad_1_64.png)';
+            ad_box.style.backgroundImage = 'url(resourses/graphics/ad_1_64.png)';
             ad_state = 1;
             break;
         case 2:
             ad_text.textContent = 'Так-же попробуйте: Terraria!'
-            ad_box.style.backgroundImage = 'url(Graphics/ad_2_64.png)';
+            ad_box.style.backgroundImage = 'url(resourses/graphics/ad_2_64.png)';
             ad_state = 2;
             break;
         case 3:
             ad_text.textContent = 'Так-же попробуйте: CookieClicker!'
-            ad_box.style.backgroundImage = 'url(Graphics/ad_3_64.png)';
+            ad_box.style.backgroundImage = 'url(resourses/graphics/ad_3_64.png)';
 
             ad_state = 3;
             break;
@@ -420,6 +469,7 @@ function tutorial(tutorial_code) {
         case 6:
             pop_up_text.textContent = 'Недостаточно денег для покупки улучшения! Обидно! Вот вам небольшой подарок, тратьте наздоровье! +1000 золота.';
             gold_amount += 1000;
+            header.textContent = 'Золота: ' + gold_amount;
             tutorial_checked[6] = 1;
             go_dark();
             break;

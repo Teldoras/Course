@@ -3,20 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Course</title>
+    <title>Gold Digger</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div id="game_field">
         <div id="clicker">
+            
             <div id="clicker_info" class="changable_style">
                 <h1 id="header">Золота: 0</h1>
                 <h3 id="click_per_time">Кликов в минуту: 0.00</h3>
                 <h2 id="session_time">Время сессии: 00:00:00</h2>
             </div>
-
-
             <div id="click_button">1</div>
         </div>
 
@@ -36,13 +35,18 @@
             <button id="load_button">Загрузить</button>
             <button id="statistic_button">Статистика</button>
             <button id="wipe_button">Обнулить сохранение</button>
-            <form id="form">
+            <form id="form_1">
                 <label for="choose_color">Выбрать цвет интерфейса:</label>
                 <input type="color" name="shoose_color" id="choose_color_id">
                 <input type="submit" id="submit_color">
             </form>
             <button id="font_1" style="font-family:'Courier New', Courier, monospace">Шрифт: курьер</button>
             <button id="font_2" style="font-family:'Times New Roman', Times, serif">Шрифт: таймс</button>
+            <form id="form_2">
+                <label for="bg_volume">Громкость музыки</label>
+                <input name="bg_volume" type="range" value="30" min="0" max="100" step="5" oninput="this.nextElementSibling.value = this.value">
+                <output>30</output>
+            </form>
         </div>
         <div id="settings_buttons" class="changable_style">
             <button id="settings_open">Настройки</button>
