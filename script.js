@@ -1,4 +1,5 @@
 let header = document.getElementById('header');
+let clicker = document.getElementById('clicker')
 let click_button = document.getElementById('click_button');
 let save_button = document.getElementById('save_button');
 let load_button = document.getElementById('load_button');
@@ -25,13 +26,18 @@ let upgrade_5_button = document.getElementById('upgrade_5');
 let darkmode = document.getElementById('darkmode');
 let pop_up = document.getElementById('pop_up');
 let pop_up_text = document.getElementById('pop_up_text');
-let pop_up_close = document.getElementById('pop_up_close');
 let style_massive = document.getElementsByClassName('changable_style');
 let click_per_time_text = document.getElementById('click_per_time');
 let session_time = document.getElementById('session_time');
 let font_1 = document.getElementById('font_1');
 let font_2 = document.getElementById('font_2');
 let game_field = document.getElementById('game_field');
+
+let clicker_info = document.getElementById('clicker_info');
+ 
+let moved_object_data = [0,0,0,0]; // id, moving, x, y
+let object_movement_state = [0, 0];
+let moving_object_position = [0, 0];
 
 let bg_music = new Audio('resourses/audio/background_1.mp3');
 
@@ -42,6 +48,9 @@ let minutes = 0;
 let hours = 0;
 let total_playtime_seconds = 0;
 let click_per_time_amount = 0;
+
+let mouse_position_x = 0,
+    mouse_position_y = 0;
 
 let tutorial_checked = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -58,14 +67,6 @@ let click_power = 1;
 
 
 
-bg_volume.addEventListener('change', function(){
-
-    bg_music.volume = parseInt(this.value) / 100;
-
-})
-
-
-
 // События
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -74,8 +75,21 @@ document.addEventListener('DOMContentLoaded', function () {
     ad_change(0);
 })
 document.addEventListener('keydown', function (event) {
-    if (event.code = 'Enter') {
+    if (event.code == 'Enter') {
         click_button.blur();
+        MouseEvent.movementX;
+    }
+    if (event.code == 'Escape') {
+        close_pop_up();
+        stop_movement(moved_object_data[0]);
+        //shop_close
+        shop_close.style.display = "none";
+        shop_open.style.display = "inline";
+        upgrade_shop.style.visibility = "hidden";
+        //setting_close
+        settings_close.style.display = "none";
+        settings_open.style.display = "inline";
+        settings_menu.style.visibility = "hidden"; x
     }
 });
 
@@ -104,6 +118,7 @@ click_button.addEventListener('mouseout', function () {
     click_button.style.width = '64px';
     click_button.style.height = '64px';
 })
+
 
 
 
@@ -158,7 +173,7 @@ shop_open.addEventListener('click', function () {
     }
 })
 shop_close.addEventListener('click', function () {
-    this.style.display = "none";
+    shop_close.style.display = "none";
     shop_open.style.display = "inline";
     upgrade_shop.style.visibility = "hidden";
 })
@@ -168,7 +183,7 @@ settings_open.addEventListener('click', function () {
     settings_menu.style.visibility = "visible";
 })
 settings_close.addEventListener('click', function () {
-    this.style.display = "none";
+    settings_close.style.display = "none";
     settings_open.style.display = "inline";
     settings_menu.style.visibility = "hidden";
 })
@@ -192,19 +207,20 @@ submit_color.addEventListener('click', function (choosed_color) {
 })
 
 font_1.addEventListener('click', function () {
-    game.style.fontFamily = '"Courier"';
-    shop.style.fontFamily = '"Courier"';
+    game_field.style.fontFamily = '"Courier"';
 })
 font_2.addEventListener('click', function () {
-    game.style.fontFamily = '"Times New Roman"';
-    shop.style.fontFamily = '"Times New Roman"';
+    game_field.style.fontFamily = '"Times New Roman"';
 })
 
 save_button.addEventListener('click', function () {
     if (tutorial_checked[7] == 0) {
         tutorial(7)
     }
-    save_data();
+    temp_bool = confirm('Вы уверены что хотите перезаписать сохранение?')
+    if (temp_bool == true) {
+        save_data();
+    }
 })
 load_button.addEventListener('click', function () {
     load_data();
@@ -212,25 +228,36 @@ load_button.addEventListener('click', function () {
 statistic_button.addEventListener('click', function () {
     pop_up_text.textContent = 'Канарейка накромлена ' + upgrade_tier[0] + ' раз. \r\n';
     pop_up_text.textContent += 'Тележка смазана ' + upgrade_tier[1] + ' раз \r\n';
-    pop_up_text.textContent += 'Кирка закалена ' + upgrade_tier[2] + ' раз \r\n';
-    pop_up_text.textContent += 'Печь улучшена ' + upgrade_tier[3] + ' раз \r\n';
-    pop_up_text.textContent += 'Работников нанято ' + upgrade_tier[4] + ' раз \r\n';
-    pop_up_text.textContent += 'Всего золота добыто ' + total_gold + '.';
+    pop_up_text.textContent += 'Кирка закалена ' + upgrade_tier[2] + ' раз' + '\r\n';
+    pop_up_text.textContent += 'Печь улучшена ' + upgrade_tier[3] + ' раз' + '\r\n';
+    pop_up_text.textContent += 'Работников нанято: ' + upgrade_tier[4] + ' ';
+    pop_up_text.textContent += 'Всего добыто ' + total_gold + ' золота.';
     go_dark();
 })
 wipe_button.addEventListener('click', function () {
-    localStorage.clear();
-    gold_amount = 0;
-    upgrade_tier = [0, 0, 0, 0, 0];
-    refresh_data();
+    result = confirm('Вы уверены что хотите удалить сохранения?');
+    if (result == true) {
+        localStorage.clear();
+        total_gold = 0;
+        gold_amount = 0;
+        upgrade_tier = [0, 0, 0, 0, 0];
+        refresh_data();
+    }
 })
 
-pop_up_close.addEventListener('click', function () {
-    darkmode.style.visibility = "hidden";
-    pop_up.style.visibility = "hidden";
+darkmode.addEventListener('click', function () {
+    close_pop_up();
 })
 ad_text.addEventListener('click', function () {
     redirect('adv');
+})
+bg_volume.addEventListener('change', function () {
+
+    bg_music.volume = parseInt(this.value) / 100;
+
+})
+document.addEventListener('keydown', function () {
+
 })
 
 //Функции
@@ -242,13 +269,13 @@ function buy__basic_upgrade(button_id, number) {
         refresh_data();
         switch (number) {
             case 0:
-                button_id.textContent = 'Покормить канарейку: +' + (number + 1) + ' - ' + upgrade_cost[number] + ' з.';
+                button_id.textContent = 'Покормить канарейку: +' + (number + 1) + ' (+' + ((number + 1) + upgrade_tier[3] * (number + 1) * 5 / 100) + ') - ' + upgrade_cost[number] + ' з.';
                 break;
             case 1:
-                button_id.textContent = 'Смазать тележку: +' + (number + 1) + ' - ' + upgrade_cost[number] + ' з.';
+                button_id.textContent = 'Смазать тележку: +' + (number + 1) + ' (+' + ((number + 1) + upgrade_tier[3] * (number + 1) * 5 / 100) + ') - ' + upgrade_cost[number] + ' з.';
                 break;
             case 2:
-                button_id.textContent = 'Закалить кирку: +' + (number + 1) + ' - ' + upgrade_cost[number] + ' з.';
+                button_id.textContent = 'Закалить кирку: +' + (number + 1) + ' (+' + ((number + 1) + upgrade_tier[3] * (number + 1) * 5 / 100) + ') - ' + upgrade_cost[number] + ' з.';
                 break;
         }
     }
@@ -271,8 +298,7 @@ function autosave() {
     setTimeout(autosave, 300000)
 }
 function load_data() {
-    if (tutorial_checked[0] == 0)
-    {
+    if (tutorial_checked[0] == 0) {
         play_sound(0);
     }
     if (tutorial_checked[7] == 0) {
@@ -296,9 +322,9 @@ function load_data() {
     if (localStorage.getItem('saved_tiers') != null) {
         upgrade_tier = JSON.parse(localStorage.getItem('saved_tiers'));
         refresh_data();
-        upgrade_1_button.textContent = 'Покормить канарейку: +1 - ' + upgrade_cost[0] + ' з.';
-        upgrade_2_button.textContent = 'Смазать тележку: +2 - ' + upgrade_cost[1] + ' з.';
-        upgrade_3_button.textContent = 'Закалить кирку: +3 - ' + upgrade_cost[2] + ' з.';
+        upgrade_1_button.textContent = 'Покормить канарейку: +1 (+' + (1 + upgrade_tier[3] * 5 / 100) + ') - ' + upgrade_cost[0] + ' з.';
+        upgrade_2_button.textContent = 'Смазать тележку: +2 (+' + (2 + upgrade_tier[3] * 10 / 100) + ') - ' + upgrade_cost[1] + ' з.';
+        upgrade_3_button.textContent = 'Закалить кирку: +3 (+' + (3 + upgrade_tier[3] * 15 / 100) + ') - ' + upgrade_cost[2] + ' з.';
         auto_click();
     }
     else {
@@ -484,21 +510,20 @@ function go_dark() {
 }
 function pop_up_slide(counter) {
 
-    if (counter < 50) {
+    if (counter < 100) {
         if (counter == 0) {
-            pop_up.style.width = 40 + '%';
-            pop_up.style.height = 25 + '%';
-            pop_up.style.left = 58 + '%';
+            pop_up.style.left = 100 + '%';
+            pop_up.style.transform = 'translate(-100%, -100%)';
         }
-        pop_up.style.top = (73 - counter / 5) + '%';
+        pop_up.style.top = (clicker.offsetHeight - counter) + 'px';
+        console.log(pop_up.style.bottom);
         pop_up.style.visibility = "visible";
-        setTimeout(pop_up_slide, 40, counter + 1);
+        setTimeout(pop_up_slide, 20, counter + 1);
     }
     else {
-        pop_up.style.width = 60 + '%';
-        pop_up.style.height = 40 + '%';
-        pop_up.style.left = 20 + '%';
-        pop_up.style.top = 30 + '%';
+        pop_up.style.left = 50 + '%';
+        pop_up.style.top = 50 + '%';
+        pop_up.style.transform = 'translate(-50%, -50%)';
         pop_up.style.visibility = "hidden";
     }
 }
@@ -508,7 +533,7 @@ function shop_blur() {
     upgrade_3_button.disabled = true;
     upgrade_4_button.disabled = true;
     upgrade_5_button.disabled = true;
-    setTimeout(shop_unblur, 2050)
+    setTimeout(shop_unblur, 2200)
 }
 function shop_unblur() {
     upgrade_1_button.disabled = false;
@@ -517,11 +542,13 @@ function shop_unblur() {
     upgrade_4_button.disabled = false;
     upgrade_5_button.disabled = false;
 }
-function play_sound(index)
-{
+function close_pop_up() {
+    darkmode.style.visibility = "hidden";
+    pop_up.style.visibility = "hidden";
+}
+function play_sound(index) {
     switch (index) {
         case 0:
-            
             bg_music.loop = true;
             bg_music.volume = 0.3;
             bg_music.play();
@@ -539,8 +566,91 @@ function play_sound(index)
             click_sound.play();
             break;
         case 2:
-            let shop_sound= new Audio ('resourses/audio/shop_coins_1.mp3');
+            let shop_sound = new Audio('resourses/audio/shop_coins_1.mp3');
             shop_sound.play();
             break;
+    }
+}
+
+clicker_info.addEventListener('mouseover', function () {
+    clicker_info.style.opacity = '100%';
+})
+clicker_info.addEventListener('mouseout', function () {
+    clicker_info.style.opacity = '75%';
+})
+clicker_info.addEventListener('mousedown', function () {
+
+    moved_object_data[0] = this;
+    moved_object_data[1] = 1;
+
+    //let abstract_element_data = this.getBoundingClientRect()
+
+    moved_object_data[2] = (Math.floor(this.getBoundingClientRect().x) + Math.floor(this.getBoundingClientRect().width / 2) - (Math.floor(window.innerWidth) - Math.floor(clicker.offsetWidth)));
+    moved_object_data[3] = (Math.floor(this.getBoundingClientRect().y) + Math.floor(this.getBoundingClientRect().height / 2));
+
+    clicker_info.style.cursor = 'grabbing';
+    clicker_info.style.zIndex = '170';
+})
+document.addEventListener('mousemove', function (event) {
+    if ((moved_object_data[0] != 0) && (moved_object_data[1] == 1)) {
+        moved_object_data[2] = moved_object_data[2] + event.movementX;
+        moved_object_data[3] = moved_object_data[3] + event.movementY;
+        moved_object_data[0].style.left = moved_object_data[2] + 'px';
+        moved_object_data[0].style.top = moved_object_data[3] + 'px';
+    }
+})
+clicker_info.addEventListener('mouseup', function () {
+    stop_movement(this);
+})
+
+function move_object(object_id) {
+
+}
+
+function stop_movement(object_id) {
+    if (moved_object_data[0] == object_id) {
+        object_id.style.cursor = 'grab';
+        object_id.style.zIndex = 'auto';
+        moved_object_data[1] = 0;
+    }
+    correct_object_position(object_id);
+}
+
+function correct_object_position(object_id) {
+    if ((moved_object_data[0] == object_id) && (moved_object_data[1] == 0)) {
+        let object_propereties = object_id.getBoundingClientRect()
+        let x_pos = (Math.floor(object_propereties.x) + Math.floor(object_propereties.width / 2) - (Math.floor(window.innerWidth) - Math.floor(clicker.offsetWidth)));
+        let y_pos = (Math.floor(object_propereties.y) + Math.floor(object_propereties.height / 2));
+
+        switch (true)
+        {
+            case(x_pos > (Math.floor(clicker.offsetWidth) - Math.floor(object_propereties.width / 2))):
+            {
+                x_pos -= Math.ceil((x_pos - (Math.round(clicker.offsetWidth) - Math.round(object_propereties.width / 2))) /4);
+                object_id.style.left = x_pos + 'px';
+                break;
+            }
+            case((x_pos - Math.floor(object_propereties.width / 2)) < 0):
+            {
+                x_pos += Math.ceil((0 - (x_pos - Math.floor(object_propereties.width / 2))) /4);
+                object_id.style.left = (x_pos +2) + 'px';
+                break;
+            }
+            case(y_pos > (Math.floor(clicker.offsetHeight) - Math.floor(object_propereties.height / 2))):
+            {
+                y_pos -= Math.ceil((y_pos - (Math.round(clicker.offsetHeight) - Math.round(object_propereties.height / 2))) /4);
+                object_id.style.top = y_pos + 'px';
+                break;
+            }
+            case((y_pos - Math.floor(object_propereties.height / 2)) < 0):
+            {
+                y_pos += Math.ceil((0 - (y_pos - Math.floor(object_propereties.height / 2))) /4);
+                object_id.style.top = (y_pos + 2) + 'px';
+                break;
+            }
+            default:
+                moved_object_data[0] = 0;
+        }
+        setTimeout(correct_object_position, 20, object_id);
     }
 }

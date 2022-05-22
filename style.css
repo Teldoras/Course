@@ -3,6 +3,10 @@
     user-select: none;
 }
 
+html{
+    height: 100%;
+}
+
 body {
     width: 100%;
     height: 100%;
@@ -14,8 +18,10 @@ body {
 
     background-color: slategray;
 
-    display: block;
-    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
 }
 
 #game_field {
@@ -23,10 +29,6 @@ body {
     min-height: 400px;
     width: 100%;
     min-width: 640px;
-
-    top: 0px;
-
-    margin: 0 auto;
 
     display: grid;
     grid-area: game;
@@ -42,7 +44,6 @@ body {
     background-position: center;
     background-size: 128px;
 
-    position: absolute;
 }
 
 #shop_buttons {
@@ -112,6 +113,10 @@ body {
     top: 20%;
     transform: translate(-50%, -50%);
 
+    cursor: grab;
+    opacity: 75%;
+    
+
     line-height: 5px;
 }
 
@@ -150,13 +155,17 @@ body {
 
 #pop_up {
     position: absolute;
-    top: 30%;
-    left: 20%;
-    width: 60%;
-    height: 40%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-    display: grid;
-    grid-template-columns: 40% 60%;
+    width: 320;
+    height: 240;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 
     visibility: hidden;
 
@@ -164,31 +173,38 @@ body {
 }
 
 #advisor {
-    background-image: url(resourses/graphics/fairy_32.png);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 96px;
+    width: fit-content;
+    height: fit-content;
+}
+
+#text_plate
+{
+    width: 200px;
+    max-width: 260px;
+    min-height: fit-content;
 }
 
 #advertisement_box {
-    position: absolute;
     height: 15%;
     min-height: 80px;
     width: 100%;
-    bottom: 0px;
+    min-width: 640;
 
     background-color: lightgrey;
     border: 3px solid black;
     background-image: url(resourses/graphics/ad_0_64.png);
 
-    z-index: 100;
+    justify-self: end;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 180;
 }
 
 #advertisement_text {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
 
     background-color: gold;
     border: 5px solid goldenrod;
