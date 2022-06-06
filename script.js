@@ -36,8 +36,6 @@ let game_field = document.getElementById('game_field');
 let clicker_info = document.getElementById('clicker_info');
  
 let moved_object_data = [0,0,0,0]; // id, moving, x, y
-let object_movement_state = [0, 0];
-let moving_object_position = [0, 0];
 
 let bg_music = new Audio('resourses/audio/background_1.mp3');
 
